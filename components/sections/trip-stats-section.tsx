@@ -1,29 +1,22 @@
 "use client";
 
 import { useRef, useState, useEffect, useCallback } from "react";
+import { STATS_VIDEO_SRC, TRIP_STATS } from "@/content/trip";
 
-const specs = [
-  { label: "Surface Area", value: "180m²" },
-  { label: "Energy Use", value: "15 kWh/m²" },
-  { label: "Solar Panels", value: "40 m²" },
-  { label: "Carbon Balance", value: "-20%" },
-];
-
-export function EditorialSection() {
+export function TripStatsSection() {
   const videoRef = useRef<HTMLDivElement>(null);
   const [scrollProgress, setScrollProgress] = useState(0);
   const rafRef = useRef<number | null>(null);
 
   const updateParallax = useCallback(() => {
     if (!videoRef.current) return;
-    
+
     const rect = videoRef.current.getBoundingClientRect();
     const windowHeight = window.innerHeight;
-    
-    // Calculate when video enters and exits viewport
+
     const videoTop = rect.top;
     const videoBottom = rect.bottom;
-    
+
     // Progress from 0 (entering viewport) to 1 (exiting viewport)
     if (videoBottom > 0 && videoTop < windowHeight) {
       const progress = 1 - (videoTop + rect.height / 2) / (windowHeight + rect.height);
@@ -41,7 +34,7 @@ export function EditorialSection() {
 
     window.addEventListener("scroll", handleScroll, { passive: true });
     updateParallax();
-    
+
     return () => {
       window.removeEventListener("scroll", handleScroll);
       if (rafRef.current) {
@@ -50,21 +43,12 @@ export function EditorialSection() {
     };
   }, [updateParallax]);
 
-  // Parallax effect: video moves up as you scroll down
+  // Parallax effect: media moves up as you scroll down
   const parallaxY = (scrollProgress - 0.5) * 30; // -15px to +15px range
 
   return (
-    <section className="bg-background">
-      {/* Newsletter Banner */}
-      
-
-      {/* Decorative Icons */}
-      <div className="flex items-center justify-center gap-6 pb-20">
-        
-        
-      </div>
-
-      {/* Full-width Video with Parallax */}
+    <section id="stats" className="bg-background">
+      {/* Full-width media with parallax. Drop the trip video into STATS_VIDEO_SRC. */}
       <div ref={videoRef} className="relative aspect-[16/9] w-full md:aspect-[21/9] overflow-hidden">
         <video
           autoPlay
@@ -79,22 +63,22 @@ export function EditorialSection() {
             WebkitBackfaceVisibility: 'hidden',
             willChange: 'transform',
           }}
-          src="https://hebbkx1anhila5yf.public.blob.vercel-storage.com/27eb7fb4-0105-4010-ac9e-0ac977a31b05_1-FZ89nvBAAsR3caRJbhYv7T2mjBofth.mp4"
+          src={STATS_VIDEO_SRC}
         />
       </div>
 
-      {/* Specs Grid */}
+      {/* Trip stats */}
       <div className="grid grid-cols-2 border-t border-border md:grid-cols-4">
-        {specs.map((spec) => (
+        {TRIP_STATS.map((stat) => (
           <div
-            key={spec.label}
+            key={stat.label}
             className="border-b border-r border-border p-8 text-center last:border-r-0 md:border-b-0"
           >
             <p className="mb-2 text-xs uppercase tracking-widest text-muted-foreground">
-              {spec.label}
+              {stat.label}
             </p>
-            <p className="font-medium text-foreground text-5xl">
-              {spec.value}
+            <p className="font-medium text-foreground text-4xl md:text-5xl">
+              {stat.value}
             </p>
           </div>
         ))}

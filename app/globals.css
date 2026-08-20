@@ -267,3 +267,13 @@
 .animate-fade-in {
   animation: fadeIn 0.7s ease-out forwards;
 }
+
+/* Hide the scrollbar on the horizontal card carousels */
+.scrollbar-hide {
+  -ms-overflow-style: none;
+  scrollbar-width: none;
+}
+
+.scrollbar-hide::-webkit-scrollbar {
+  display: none;
+}
